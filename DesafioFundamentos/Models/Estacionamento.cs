@@ -1,22 +1,59 @@
+using System.Text.RegularExpressions;
+
 namespace DesafioFundamentos.Models
 {
     public class Estacionamento
     {
         private decimal precoInicial = 0;
         private decimal precoPorHora = 0;
-        private List<string> veiculos = new List<string>();
+        private List<string> veiculos;
 
         public Estacionamento(decimal precoInicial, decimal precoPorHora)
         {
             this.precoInicial = precoInicial;
             this.precoPorHora = precoPorHora;
+            veiculos = new List<string>();
         }
 
         public void AdicionarVeiculo()
         {
             // TODO: Pedir para o usuário digitar uma placa (ReadLine) e adicionar na lista "veiculos"
             // *IMPLEMENTE AQUI*
-            Console.WriteLine("Digite a placa do veículo para estacionar:");
+            Console.Clear();
+            Console.WriteLine("Digite a placa do veículo para estacionar ou pressione ESC para voltar o menu inicial:");
+            bool flag = true;
+
+            while (flag)
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true); 
+
+                if (keyInfo.Key == ConsoleKey.Escape) 
+                {
+                    Console.WriteLine("\nReturn to the main menu...");
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    flag = false; 
+                }
+                else
+                {
+                    string input = Console.ReadLine();
+                    bool plateValidate = CheckIsValidPlate(input);
+
+                    if (plateValidate)
+                    {
+                        veiculos.Add(input);
+                        Console.WriteLine("Adding vehicle, please await...");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("Vehicle add successfully!");
+                        Thread.Sleep(1000);
+                        Console.Clear();
+                        flag = false;
+                        break;
+                    }
+                    Console.WriteLine("Invalid plate. Please re-enter a valid plate(XXX-1111 / XXX1X11) or press ESC to return main menu.");
+                }
+            }
+            Console.WriteLine("Saiu do loop");
         }
 
         public void RemoverVeiculo()
@@ -62,6 +99,13 @@ namespace DesafioFundamentos.Models
             {
                 Console.WriteLine("Não há veículos estacionados.");
             }
+        }
+
+        public bool CheckIsValidPlate(string plate)
+        {
+            string pattern = @"^([A-Za-z]{3}\d[A-Za-z]\d{2})|([A-Za-z]{3}\-?\d{4})$";
+
+            return Regex.IsMatch(plate, pattern);
         }
     }
 }
