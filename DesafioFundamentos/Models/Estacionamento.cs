@@ -91,13 +91,31 @@ namespace DesafioFundamentos.Models
             // Verifica se há veículos no estacionamento
             if (veiculos.Any())
             {
-                Console.WriteLine("Os veículos estacionados são:");
                 // TODO: Realizar um laço de repetição, exibindo os veículos estacionados
                 // *IMPLEMENTE AQUI*
+                Console.Clear();
+                Console.WriteLine("Os veículos estacionados são:");
+                Console.WriteLine();
+                Console.WriteLine("***********");
+                foreach (var veiculo in veiculos)
+                {
+                    Console.WriteLine($"* {veiculo} *");
+                }
+                Console.WriteLine("***********");
+                Console.WriteLine("Press any key to return main menu");
+                string exit = "";
+                ConsoleKeyInfo keyInfo;
+                while (string.IsNullOrEmpty(exit))
+                {
+                    keyInfo = Console.ReadKey(intercept: true); 
+                    exit = keyInfo.KeyChar.ToString();
+                }
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("Não há veículos estacionados.");
+                Thread.Sleep(1000);
             }
         }
 
